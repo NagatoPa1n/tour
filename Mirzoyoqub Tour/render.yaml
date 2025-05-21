@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: tour-backend
+    buildCommand: ./mvnw clean install
+    startCommand: java -jar target/tour-0.0.1-SNAPSHOT.jar
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://<YOUR-DB-HOST>:5432/tour
+      - key: SPRING_DATASOURCE_USERNAME
+        value: postgres
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: bm040321
+    runtime: docker
