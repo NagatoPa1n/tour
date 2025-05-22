@@ -59,31 +59,17 @@
 ## Run the application
 #ENTRYPOINT ["java", "-jar", "app.jar"]
 
-
 FROM maven:3.8.3-openjdk-17
 COPY . .
 RUN mvn clean package -DskipTests
 
 
 
-FROM openjdk:17 as layers
-WORKDIR /tmp
-COPY target/*jar app.jar
-
-RUN java -Djarmode=layerstools -jar app.jar extract
-
 FROM openjdk:17
-WORKDIR /tmp
 
-RUN useradd -ms /bin/bash spring-user
-USER spring-user
+COPY target/ /tmp/
 
-
-COPY --from=layers /tmp/dependencies/ ./
-COPY --from=layers /tmp/spring-boot-loader/ ./
-COPY --from=layers /tmp/snapshot-dependencies ./
-COPY --from=layers /tmp/application/ ./
-
+WORKDIR /tmp/
 EXPOSE 8080
 
-ENTRYPOINT exec java org.springframework.boot.loader.JarLauncher
+ENTRYPOINT exec java -jar /tmp/*.jar
