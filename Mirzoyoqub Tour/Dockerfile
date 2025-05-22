@@ -59,15 +59,15 @@
 ## Run the application
 #ENTRYPOINT ["java", "-jar", "app.jar"]
 
-FROM maven:3.8.3-openjdk-17
+FROM maven:3.8.3-openjdk-17-slim
 COPY . .
 RUN mvn clean package -DskipTests
 
 
 
-FROM openjdk:17
+FROM openjdk:17-ea-3-slim
 
-COPY target/ /tmp/
+COPY /target/ /tmp/
 
 WORKDIR /tmp/
 EXPOSE 8080
